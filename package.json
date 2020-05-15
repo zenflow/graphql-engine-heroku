@@ -3,11 +3,13 @@
   "name": "graphql-engine-heroku",
   "version": "1.0.0",
   "scripts": {
+    "start": "docker-compose up --build",
     "console": "hasura console",
     "prod-console": "hasura console --endpoint https://zenflow-graphql-engine-heroku.herokuapp.com"
   },
   "dependencies": {
     "express": "^4.17.1",
+    "foreman": "^3.0.1",
     "http-proxy-middleware": "^1.0.3"
   },
   "devDependencies": {

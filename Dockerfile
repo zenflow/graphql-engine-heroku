@@ -15,9 +15,14 @@ RUN cat /tmp/node_etc_passwd >> /etc/passwd
 # Appends something like `node:x:1000:1000:Linux User,,,:/home/node:/bin/sh`
 # USER node
 
-# Copy node build artifacts to /app
+# Copy node dependencies
 COPY --from=node-build /app/node_modules /app/node_modules
+
+# Copy node source
 COPY *-process.js /app/
+
+# Copy Procfile
+COPY container.Procfile /app/
 
 # Copy hasura migrations & metadata
 COPY metadata /hasura-metadata/
@@ -27,7 +32,10 @@ COPY migrations /hasura-migrations/
 # Note: The [cli-migrations] docker image sets WORKDIR to /tmp/hasura-project and it can't be overridden...
 #  so we must `cd` into the /app folder.
 CMD cd /app && \
-    node main-process.js
+    node /app/node_modules/.bin/nf \
+        --procfile container.Procfile \
+        start \
+        front=1,engine=1
 
 ## Comment the command above and use the command below to
 ## enable an access-key and an auth-hook

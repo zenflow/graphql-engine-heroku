@@ -1,7 +1,9 @@
+// TODO: Delay listening until `engine` is online
+
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
-const { HASURA_PORT, PORT } = process.env
+const { PORT } = process.env
 
 // As per documentation: https://hasura.io/docs/1.0/graphql/manual/api-reference/index.html
 const hasuraApiPaths = [
@@ -18,7 +20,7 @@ const hasuraApiPaths = [
 const app = express()
 
 const proxyMiddleware = createProxyMiddleware({
-  target: `http://localhost:${HASURA_PORT}`,
+  target: 'http://localhost:8080',
   changeOrigin: true,
   ws : true,
 })
@@ -26,4 +28,9 @@ hasuraApiPaths.forEach(path => app.use(path, proxyMiddleware))
 
 app.use('/', (req, res) => res.send('Hello world'))
 
-app.listen(PORT)
+app.listen(PORT, error => {
+  if (error) {
+    throw error
+  }
+  console.log(`Listening on port ${PORT}...`)
+})

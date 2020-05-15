@@ -1,5 +1,5 @@
 version: 2
-endpoint: http://docker-machine:80
+endpoint: http://docker-machine:8079
 metadata_directory: metadata
 actions:
   kind: synchronous
