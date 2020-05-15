@@ -1,9 +1,18 @@
+FROM astefanutti/scratch-node:14.2.0 as node
 FROM hasura/graphql-engine:v1.2.1.cli-migrations-v2
+
+COPY --from=node /bin/node /bin/node
+COPY --from=node /lib/ld-musl-*.so.1 /lib/
+COPY --from=node /etc/passwd /tmp/node_etc_passwd
+RUN cat /tmp/node_etc_passwd >> /etc/passwd
+# Appends something like `node:x:1000:1000:Linux User,,,:/home/node:/bin/sh`
+# USER node
 
 COPY metadata /hasura-metadata/
 COPY migrations /hasura-migrations/
 
-CMD graphql-engine \
+CMD node --version && \
+    graphql-engine \
     serve \
     --server-port $PORT
 
