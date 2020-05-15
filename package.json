@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "graphql-engine-heroku",
+  "version": "1.0.0",
+  "scripts": {
+    "console": "hasura console",
+    "prod-console": "hasura console --endpoint https://zenflow-graphql-engine-heroku.herokuapp.com"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.3"
+  },
+  "devDependencies": {
+    "hasura-cli": "^1.2.1"
+  }
+}
